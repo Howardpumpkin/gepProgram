@@ -19,7 +19,7 @@ from django.urls import path
 from myapp import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.home, name='home'),  # 新增的路由
+    path('', views.home, name='home'),
+    path('upload/', views.upload_file, name='upload_file'),
 ]
 

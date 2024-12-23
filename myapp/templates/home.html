@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>重力與磁力異常分析工具</title>
+</head>
+<body>
+    <h1>重力與磁力異常分析工具</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="data_file" required>
+        <button type="submit">上傳並分析</button>
+    </form>
+    <div id="result">
+        <h2>分析結果</h2>
+        <h3>重力異常圖:</h3>
+        <img id="gravity_img" src="" alt="Gravity Anomaly">
+        <h3>磁力異常圖:</h3>
+        <img id="magnetic_img" src="" alt="Magnetic Anomaly">
+    </div>
+    <script>
+        const form = document.getElementById('upload-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            fetch('/upload/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById('gravity_img').src = data.gravity_img;
+                    document.getElementById('magnetic_img').src = data.magnetic_img;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
